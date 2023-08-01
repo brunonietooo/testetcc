@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <style>
+    body {
+      background-color: #f0f0f0;
+    }
+
+    h1 {
+      font-size: 48px;
+      color: #066a75;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      text-align: center;
+      padding: 20px 0;
+      border-bottom: 2px solid #066a75;
+    }
+
+    form {
+      width: 300px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #b2b2b2;
+      border-radius: 5px;
+      background-color: #fff;
+      box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.6);
+    }
+
+    label {
+      display: block;
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    button, [type="submit"] {
+      width: 100%;
+      cursor: pointer;
+      background-color: #3d9db3;
+      padding: 10px 0;
+      color: #fff;
+      font-size: 20px;
+      border: none;
+      border-radius: 5px;
+      margin-top: 20px;
+      text-shadow: 0 1px 1px #333;
+      transition: background-color 0.2s ease;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #3697a9;
+    }
+
+    button[type="submit"]:focus {
+      outline: none;
+    }
+
+    .error-message {
+      color: red;
+      margin-top: 10px;
+    }
+
+  </style>
+</head>
+<body>
+  <h1>Login Admin</h1>
+
+  <form id="loginForm">
+    <label for="username">Usuário:</label>
+    <input type="text" id="username" required>
+
+    <label for="password">Senha:</label>
+    <input type="password" id="password" required>
+
+    <button type="submit">Entrar</button>
+
+    <p class="error-message" id="errorText"></p>
+  </form>
+
+  <script>
+    var loginForm = document.getElementById("loginForm");
+    var errorText = document.getElementById("errorText");
+
+    loginForm.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      var usernameInput = document.getElementById("username");
+      var passwordInput = document.getElementById("password");
+
+      var username = usernameInput.value;
+      var password = passwordInput.value;
+
+      // Verificar as credenciais do usuário
+      if (username === "admin" && password === "1") {
+        usernameInput.value = "";
+        passwordInput.value = "";
+
+        // Redirecionar para o arquivo do cronograma
+        window.location.href = "cronograma.html";
+      } else {
+        errorText.textContent = "Credenciais inválidas. Tente novamente.";
+        usernameInput.value = "";
+        passwordInput.value = "";
+        usernameInput.focus();
+      }
+    });
+  </script>
+  <div>
+    <input type="radio" name="tipo">Admin
+  </div>
+
+
+</body>
+</html>

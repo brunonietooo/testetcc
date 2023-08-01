@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cronograma</title>
+  
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .edit-input {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Cronograma</h1>
+  <table id="cronograma">
+    <tr>
+      <th>Segunda-feira</th>
+      <th>Feito</th>
+      <th>Horario</th>
+      <th>Ações</th>
+    </tr>
+  </table>
+  
+
+  <form id="formulario">
+    <input type="text" id="segundaInput" required placeholder="Digite a tarefa">
+    <input type="checkbox" id="segundaFeito" disabled>
+    <button type="submit">Adicionar Tarefa</button>
+  </form> 
+
+
+  <script>
+    var dadosCronograma = [];
+
+    //FUNCAO PARA EXIBIR NO CRONOGRAMA
+    function exibirCronograma() {
+      var tabela = document.getElementById("cronograma");
+
+      for (var i = 0; i < dadosCronograma.length; i++) {
+        var linha = tabela.insertRow(i + 1);
+        linha.id = "linha-" + dadosCronograma[i].id;
+
+        var colunaSegunda = linha.insertCell(0);
+        colunaSegunda.innerHTML = dadosCronograma[i].segunda;
+
+        var colunaSegundaFeito = linha.insertCell(1);
+        colunaSegundaFeito.innerHTML = "<input type='checkbox' " + (dadosCronograma[i].segundaFeito ? "checked" : "") + " onchange='atualizarHorario(this)'>";
+
+        var colunaHorario = linha.insertCell(2);
+        colunaHorario.innerHTML = dadosCronograma[i].horario;
+
+        var colunaAcoes = linha.insertCell(3);
+        colunaAcoes.innerHTML = "<button onclick='editarTarefa(" + dadosCronograma[i].id + ", 0)'>Editar</button> <button onclick='excluirTarefa(" + dadosCronograma[i].id + ")'>Excluir</button>";
+      }
+    }
+
+    //PARA ADICIONAR NO CRONOGRAMA
+    function adicionarTarefa(event) {
+      event.preventDefault();
+
+      var segundaInput = document.getElementById("segundaInput");
+      var segundaFeito = document.getElementById("segundaFeito").checked;
+
+      var novaTarefa = {
+        id: dadosCronograma.length + 1,
+        segunda: segundaInput.value,
+        segundaFeito: segundaFeito,
+        horario: ""
+      };
+
+      dadosCronograma.push(novaTarefa);
+
+      var tabela = document.getElementById("cronograma");
+      var linha = tabela.insertRow(dadosCronograma.length);
+      linha.id = "linha-" + novaTarefa.id;
+
+      var colunaSegunda = linha.insertCell(0);
+      colunaSegunda.innerHTML = novaTarefa.segunda;
+
+      var colunaSegundaFeito = linha.insertCell(1);
+      colunaSegundaFeito.innerHTML = "<input type='checkbox' " + (novaTarefa.segundaFeito ? "checked" : "") + " onchange='atualizarHorario(this)'>";
+
+      var colunaHorario = linha.insertCell(2);
+      colunaHorario.innerHTML = novaTarefa.horario;
+
+      var colunaAcoes = linha.insertCell(3);
+      colunaAcoes.innerHTML = "<button onclick='editarTarefa(" + novaTarefa.id + ", 0)'>Editar</button> <button onclick='excluirTarefa(" + novaTarefa.id + ")'>Excluir</button>";
+
+      segundaInput.value = "";
+    }
+
+    //EDITAR AS COLUNAS NO CRONOGRAMA
+    function editarTarefa(id, coluna) {
+      var linha = document.getElementById("linha-" + id);
+      var colunaSelecionada = linha.cells[coluna];
+
+      var valorAntigo = colunaSelecionada.innerHTML;
+
+      var input = document.createElement("input");
+      input.type = "text";
+      input.value = valorAntigo;
+      input.className = "edit-input";
+      input.onblur = function() {
+        salvarEdicao(id, coluna, this.value);
+      };
+
+      colunaSelecionada.innerHTML = "";
+      colunaSelecionada.appendChild(input);
+      input.focus();
+    }
+
+    //SALVAR A EDICAO DA ALTERACAO
+    function salvarEdicao(id, coluna, novoValor) {
+      var linha = document.getElementById("linha-" + id);
+      var colunaSelecionada = linha.cells[coluna];
+
+      colunaSelecionada.innerHTML = novoValor;
+      colunaSelecionada.onclick = function() {
+        editarTarefa(id, coluna);
+      };
+
+      var tarefa = dadosCronograma.find(function(item) {
+        return item.id === id;
+      });
+
+      if (tarefa) {
+        switch (coluna) {
+          case 0:
+            tarefa.segunda = novoValor;
+            break;
+        }
+      }
+    }
+
+    //EXCLUIR A COLUNA
+    function excluirTarefa(id) {
+      var linha = document.getElementById("linha-" + id);
+      linha.parentNode.removeChild(linha);
+
+      dadosCronograma = dadosCronograma.filter(function(item) {
+        return item.id !== id;
+      });
+    }
+
+    //SELECIONAR A CAIXINHA QUE IRA APRESENTAR O HORARIO
+  
+    function atualizarHorario(checkbox){
+      var linha = checkbox.parentNode.parentNode;
+      var colunaHorario = linha.cells[2];
+
+      if (checkbox.checked) {
+        colunaHorario.innerHTML = getTime();
+      } else {
+        colunaHorario.innerHTML = "";
+      }
+    }
+
+    // Obtém o horário atual no formato HH:mm:ss
+function getTime() {
+  var data = new Date();
+  var hora = data.getHours();
+  var min = data.getMinutes();
+  var seg = data.getSeconds();
+
+  // Adiciona um zero à esquerda se o valor tiver apenas um dígito
+  var horaFormatada = padZeroLeft(hora);
+  var minFormatado = padZeroLeft(min);
+  var segFormatado = padZeroLeft(seg);
+
+  return horaFormatada + ":" + minFormatado + ":" + segFormatado;
+}
+
+  // Adiciona um zero à esquerda se o valor tiver apenas um dígito
+function padZeroLeft(valor) {
+  return valor.toString().padStart(2, '0');
+}
+    exibirCronograma();
+
+    var formulario = document.getElementById("formulario");
+    formulario.addEventListener("submit", adicionarTarefa);
+
+    // Inicia a exibição do horário atual
+setInterval(function() {
+  var horarios = document.getElementsByClassName("horario");
+  for (var i = 0; i < horarios.length; i++) {
+    if (horarios[i].parentNode.firstChild.firstChild.checked) {
+      horarios[i].textContent = getTime();
+    }
+  }
+}, 500);
+  </script>
+</body>
+</html>
