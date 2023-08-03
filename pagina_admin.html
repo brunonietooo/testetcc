@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cronograma</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+    }
+
+    h1 {
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 20px 0;
+      border: 1px solid #000;
+    }
+
+    th, td {
+      border: 1px solid #000;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #066a75;
+      color: #fff;
+    }
+
+    .edit-input {
+      width: 100%;
+    }
+
+    form {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border: 1px solid #b2b2b2;
+      border-radius: 5px;
+    }
+
+    input[type="text"], input[type="checkbox"] {
+      margin-right: 10px;
+    }
+
+    button[type="submit"] {
+      cursor: pointer;
+      background-color: #3d9db3;
+      padding: 10px 20px;
+      color: #fff;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      margin-top: 20px;
+      text-shadow: 0 1px 1px #333;
+      transition: background-color 0.2s ease;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #3697a9;
+    }
+
+    .horario {
+      font-weight: bold;
+      color: #066a75;
+    }
+  </style>
+</head>
+<body>
+  <h1>Cronograma</h1>
+
+  <table id="cronograma">
+    <tr>
+      <th>Segunda-feira</th>
+      <th>Feito</th>
+      <th>Horário</th>
+      <th>Terça-feira</th>
+      <th>Feito</th>
+      <th>Horário</th>
+      <th>Quarta-feira</th>
+      <th>Feito</th>
+      <th>Horário</th>
+      <th>Quinta-feira</th>
+      <th>Feito</th>
+      <th>Horário</th>
+      <th>Sexta-feira</th>
+      <th>Feito</th>
+      <th>Horário</th>
+      <th>Ações</th>
+    </tr>
+  </table>
+
+  <form id="formulario">
+    <input type="text" id="segundaInput" required placeholder="Digite a tarefa">
+    <input type="checkbox" id="segundaFeito" disabled>
+    <input type="text" id="tercaInput" required placeholder="Digite a tarefa">
+    <input type="checkbox" id="tercaFeito" disabled>
+    <input type="text" id="quartaInput" required placeholder="Digite a tarefa">
+    <input type="checkbox" id="quartaFeito" disabled>
+    <input type="text" id="quintaInput" required placeholder="Digite a tarefa">
+    <input type="checkbox" id="quintaFeito" disabled>
+    <input type="text" id="sextaInput" required placeholder="Digite a tarefa">
+    <input type="checkbox" id="sextaFeito" disabled>
+    <button type="submit">Adicionar Tarefa</button>
+  </form> 
+
+  <script>
+    var dadosCronograma = [];
+
+    //
+    function exibirCronograma() {
+      var tabela = document.getElementById("cronograma");
+
+      for (var i = 0; i < dadosCronograma.length; i++) {
+        var linha = tabela.insertRow(i + 1);
+        linha.id = "linha-" + dadosCronograma[i].id;
+
+        var colunaSegunda = linha.insertCell(0);
+        colunaSegunda.innerHTML = dadosCronograma[i].segunda;
+
+        var colunaSegundaFeito = linha.insertCell(1);
+        colunaSegundaFeito.innerHTML = "<input type='checkbox' disabled " + (dadosCronograma[i].segundaFeito ? "checked" : "") + ">";
+
+        var colunaHorario = linha.insertCell(2);
+        colunaHorario.innerHTML = "<span class='horario'>" + dadosCronograma[i].horarioSegunda + "</span>";
+
+        var colunaTerca = linha.insertCell(3);
+        colunaTerca.innerHTML = dadosCronograma[i].terca;
+
+        var colunaTercaFeito = linha.insertCell(4);
+        colunaTercaFeito.innerHTML = "<input type='checkbox' disabled " + (dadosCronograma[i].tercaFeito ? "checked" : "") + ">";
+
+        var colunaHorario = linha.insertCell(5);
+        colunaHorario.innerHTML = "<span class='horario'>" + dadosCronograma[i].horarioTerca + "</span>";
+
+        var colunaQuarta = linha.insertCell(6);
+        colunaQuarta.innerHTML = dadosCronograma[i].quarta;
+
+        var colunaQuartaFeito = linha.insertCell(7);
+        colunaQuartaFeito.innerHTML = "<input type='checkbox' disabled " + (dadosCronograma[i].quartaFeito ? "checked" : "") + ">";
+
+        var colunaHorario = linha.insertCell(8);
+        colunaHorario.innerHTML = "<span class='horario'>" + dadosCronograma[i].horarioQuarta + "</span>";
+
+        var colunaQuinta = linha.insertCell(9);
+        colunaQuinta.innerHTML = dadosCronograma[i].quinta;
+
+        var colunaQuintaFeito = linha.insertCell(10);
+        colunaQuintaFeito.innerHTML = "<input type='checkbox' disabled " + (dadosCronograma[i].quintaFeito ? "checked" : "") + ">";
+
+        var colunaHorario = linha.insertCell(11);
+        colunaHorario.innerHTML = "<span class='horario'>" + dadosCronograma[i].horarioQuinta + "</span>";
+
+        var colunaSexta = linha.insertCell(12);
+        colunaSexta.innerHTML = dadosCronograma[i].sexta;
+
+        var colunaSextaFeito = linha.insertCell(13);
+        colunaSextaFeito.innerHTML = "<input type='checkbox' disabled " + (dadosCronograma[i].sextaFeito ? "checked" : "") + ">";
+
+        var colunaHorario = linha.insertCell(14);
+        colunaHorario.innerHTML = "<span class='horario'>" + dadosCronograma[i].horarioSexta + "</span>";
+
+        var colunaAcoes = linha.insertCell(15);
+        colunaAcoes.innerHTML = "<button onclick='editarTarefa(" + dadosCronograma[i].id + ", 0)'>Editar</button> <button onclick='excluirTarefa(" + dadosCronograma[i].id + ")'>Excluir</button>";
+      }
+    }
+
+    //Cria as tarefas 
+    function adicionarTarefa(event) {
+      event.preventDefault();
+
+      var segundaInput = document.getElementById("segundaInput");
+      var segundaFeito = document.getElementById("segundaFeito").checked;
+      var tercaInput = document.getElementById("tercaInput");
+      var tercaFeito = document.getElementById("tercaFeito").checked;
+      var quartaInput = document.getElementById("quartaInput");
+      var quartaFeito = document.getElementById("quartaFeito").checked;
+      var quintaInput = document.getElementById("quintaInput");
+      var quintaFeito = document.getElementById("quintaFeito").checked;
+      var sextaInput = document.getElementById("sextaInput");
+      var sextaFeito = document.getElementById("sextaFeito").checked;
+
+      var novaTarefa = {
+        id: dadosCronograma.length + 1,
+        segunda: segundaInput.value,
+        segundaFeito: segundaFeito,
+        terca: tercaInput.value,
+        tercaFeito: tercaFeito,
+        quarta: quartaInput.value,
+        quartaFeito: quartaFeito,
+        quinta: quintaInput.value,
+        quintaFeito: quintaFeito,
+        sexta: sextaInput.value,
+        sextaFeito: sextaFeito,
+        horarioSegunda: "",
+        horarioTerca: "",
+        horarioQuarta: "",
+        horarioQuinta: "",
+        horarioSexta: ""
+      };
+
+      //Apresenta no cronograma as tarefas criadas
+      dadosCronograma.push(novaTarefa);
+
+      var tabela = document.getElementById("cronograma");
+      var linha = tabela.insertRow(dadosCronograma.length);
+      linha.id = "linha-" + novaTarefa.id;
+
+      var colunaSegunda = linha.insertCell(0);
+      colunaSegunda.innerHTML = novaTarefa.segunda;
+
+      var colunaSegundaFeito = linha.insertCell(1);
+      colunaSegundaFeito.innerHTML = "<input type='checkbox' " + (novaTarefa.segundaFeito ? "checked" : "") + " onchange='atualizarHorarioSegunda(this)'>";
+
+      var colunaHorario = linha.insertCell(2);
+      colunaHorario.innerHTML = "<span class='horario'></span>";
+
+      var colunaTerca = linha.insertCell(3);
+      colunaTerca.innerHTML = novaTarefa.terca;
+
+      var colunaTercaFeito = linha.insertCell(4);
+      colunaTercaFeito.innerHTML = "<input type='checkbox'  " + (novaTarefa.tercaFeito ? "checked" : "") + " onchange='atualizarHorarioTerca(this)'>";
+
+      var colunaHorario = linha.insertCell(5);
+      colunaHorario.innerHTML = "<span class='horario'></span>";
+
+      var colunaQuarta = linha.insertCell(6);
+      colunaQuarta.innerHTML = novaTarefa.quarta;
+
+      var colunaQuartaFeito = linha.insertCell(7);
+      colunaQuartaFeito.innerHTML = "<input type='checkbox'  " + (novaTarefa.quartaFeito ? "checked" : "") + " onchange='atualizarHorarioQuarta(this)'>";
+
+      var colunaHorario = linha.insertCell(8);
+      colunaHorario.innerHTML = "<span class='horario'></span>";
+
+      var colunaQuinta = linha.insertCell(9);
+      colunaQuinta.innerHTML = novaTarefa.quinta;
+
+      var colunaQuintaFeito = linha.insertCell(10);
+      colunaQuintaFeito.innerHTML = "<input type='checkbox'  " + (novaTarefa.quintaFeito ? "checked" : "") + " onchange='atualizarHorarioQuinta(this)'>";
+
+      var colunaHorario = linha.insertCell(11);
+      colunaHorario.innerHTML = "<span class='horario'></span>";
+
+      var colunaSexta = linha.insertCell(12);
+      colunaSexta.innerHTML = novaTarefa.sexta;
+
+      var colunaSextaFeito = linha.insertCell(13);
+      colunaSextaFeito.innerHTML = "<input type='checkbox'  " + (novaTarefa.sextaFeito ? "checked" : "") + " onchange='atualizarHorarioSexta(this)'>";
+
+      var colunaHorario = linha.insertCell(14);
+      colunaHorario.innerHTML = "<span class='horario'></span>";
+
+      var colunaAcoes = linha.insertCell(15);
+      colunaAcoes.innerHTML = "<button onclick='editarTarefa(" + novaTarefa.id + ", 0)'>Editar</button> <button onclick='excluirTarefa(" + novaTarefa.id + ")'>Excluir</button>";
+
+      segundaInput.value = "";
+      segundaFeito.checked = false;
+      tercaInput.value = "";
+      tercaFeito.checked = false;
+      quartaInput.value = "";
+      quartaFeito.checked = false;
+      quintaInput.value = "";
+      quintaFeito.checked = false;
+      sextaInput.value = "";
+      sextaFeito.checked = false;
+    }
+    //Edita a tarefa
+    function editarTarefa(id, coluna) {
+      var linha = document.getElementById("linha-" + id);
+      var colunaSelecionada = linha.cells[coluna];
+
+      var valorAntigo = colunaSelecionada.innerHTML;
+
+      var input = document.createElement("input");
+      input.type = "text";
+      input.value = valorAntigo;
+      input.className = "edit-input";
+      input.onblur = function() {
+        salvarEdicao(id, coluna, this.value);
+      };
+
+      colunaSelecionada.innerHTML = "";
+      colunaSelecionada.appendChild(input);
+      input.focus();
+    }
+    //Salva a funcao na coluna da semana
+    function salvarEdicao(id, coluna, novoValor) {
+      var linha = document.getElementById("linha-" + id);
+      var colunaSelecionada = linha.cells[coluna];
+
+      colunaSelecionada.innerHTML = novoValor;
+      colunaSelecionada.onclick = function() {
+        editarTarefa(id, coluna);
+      };
+
+      var tarefa = dadosCronograma.find(function(item) {
+        return item.id === id;
+      });
+
+      if (tarefa) {
+        switch (coluna) {
+          case 0:
+            tarefa.segunda = novoValor;
+            break;
+          case 3:
+            tarefa.terca = novoValor;
+            break;
+          case 6:
+            tarefa.quarta = novoValor;
+            break;
+          case 9:
+            tarefa.quinta = novoValor;
+            break;
+          case 12:
+            tarefa.sexta = novoValor;
+            break;
+          case 15:
+            tarefa.horario = novoValor;
+            break;
+        }
+      }
+    }
+    //Exclui a coluna clicando em "EXCLUIR"
+    function excluirTarefa(id) {
+      var linha = document.getElementById("linha-" + id);
+      linha.parentNode.removeChild(linha);
+
+      dadosCronograma = dadosCronograma.filter(function(item) {
+        return item.id !== id;
+      });
+    }
+    
+    //Atualiza a coluna horario com o valor atual
+    function atualizarHorarioSegunda(checkbox) {
+      var linha = checkbox.parentNode.parentNode;
+      var colunaHorario = linha.cells[2];
+
+      if (checkbox.checked) {
+        colunaHorario.innerHTML = getTime();
+      } else {
+        colunaHorario.innerHTML = "";
+      }
+    }
+    function atualizarHorarioTerca(checkbox) {
+      var linha = checkbox.parentNode.parentNode;
+      var colunaHorario = linha.cells[5];
+
+      if (checkbox.checked) {
+        colunaHorario.innerHTML = getTime();
+      } else {
+        colunaHorario.innerHTML = "";
+      }
+    }
+    function atualizarHorarioQuarta(checkbox) {
+      var linha = checkbox.parentNode.parentNode;
+      var colunaHorario = linha.cells[8];
+
+      if (checkbox.checked) {
+        colunaHorario.innerHTML = getTime();
+      } else {
+        colunaHorario.innerHTML = "";
+      }
+    }
+    function atualizarHorarioQuinta(checkbox) {
+      var linha = checkbox.parentNode.parentNode;
+      var colunaHorario = linha.cells[11];
+
+      if (checkbox.checked) {
+        colunaHorario.innerHTML = getTime();
+      } else {
+        colunaHorario.innerHTML = "";
+      }
+    }
+    function atualizarHorarioSexta(checkbox) {
+      var linha = checkbox.parentNode.parentNode;
+      var colunaHorario = linha.cells[14];
+
+      if (checkbox.checked) {
+        colunaHorario.innerHTML = getTime();
+      } else {
+        colunaHorario.innerHTML = "";
+      }
+    }
+
+    // Obtém o horário atual no formato HH:mm:ss
+    function getTime() {
+  var data = new Date();
+  var hora = data.getHours();
+  var min = data.getMinutes();
+  var seg = data.getSeconds();
+
+  // Adiciona um zero à esquerda se o valor tiver apenas um dígito
+  var horaFormatada = padZeroLeft(hora);
+  var minFormatado = padZeroLeft(min);
+  var segFormatado = padZeroLeft(seg);
+
+  return horaFormatada + ":" + minFormatado + ":" + segFormatado;
+}
+
+  // Adiciona um zero à esquerda se o valor tiver apenas um dígito
+function padZeroLeft(valor) {
+  return valor.toString().padStart(2, '0');
+}
+
+    exibirCronograma();
+
+    var formulario = document.getElementById("formulario");
+    formulario.addEventListener("submit", adicionarTarefa);
+
+    // Inicia a exibição do horário atual
+    setInterval(function() {
+      var horarios = document.getElementsByClassName("horario");
+      for (var i = 0; i < horarios.length; i++) {
+        if (horarios[i].parentNode.firstChild.firstChild.checked) {
+          horarios[i].textContent = getTime();
+        }
+      }
+    }, 500);
+  </script>
+</body>
+</html>

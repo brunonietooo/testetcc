@@ -18,6 +18,7 @@
     .edit-input {
       width: 100%;
     }
+
   </style>
 </head>
 <body>
@@ -89,6 +90,7 @@
 
       var colunaSegundaFeito = linha.insertCell(1);
       colunaSegundaFeito.innerHTML = "<input type='checkbox' " + (novaTarefa.segundaFeito ? "checked" : "") + " onchange='atualizarHorario(this)'>";
+    
 
       var colunaHorario = linha.insertCell(2);
       colunaHorario.innerHTML = novaTarefa.horario;
@@ -142,6 +144,7 @@
       }
     }
 
+
     //EXCLUIR A COLUNA
     function excluirTarefa(id) {
       var linha = document.getElementById("linha-" + id);
@@ -158,8 +161,11 @@
       var linha = checkbox.parentNode.parentNode;
       var colunaHorario = linha.cells[2];
 
+
       if (checkbox.checked) {
         colunaHorario.innerHTML = getTime();
+        checkbox.checkbox = disable;
+        
       } else {
         colunaHorario.innerHTML = "";
       }
